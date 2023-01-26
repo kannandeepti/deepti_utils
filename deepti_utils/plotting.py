@@ -233,6 +233,7 @@ def draw_power_law_triangle(alpha, x0, width, orientation, base=10,
     x1 = x0*base**width
     y1 = y0*(x1/x0)**alpha
     ax.plot([x0, x1], [y0, y1], 'k')
+    corner = [x0, y0]
     if not hypotenuse_only:
         if (alpha >= 0 and orientation == 'up') \
                 or (alpha < 0 and orientation == 'down'):

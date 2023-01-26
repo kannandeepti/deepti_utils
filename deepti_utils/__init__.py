@@ -7,5 +7,5 @@ development projects. For now, only contains plotting utils.
 
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = 'Deepti Kannan'
