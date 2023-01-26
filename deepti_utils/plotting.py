@@ -198,7 +198,7 @@ def update_plotting_params(style):
         plt.rcParams.update(params_dict['default'])
 
 def draw_power_law_triangle(alpha, x0, width, orientation, base=10,
-                            x0_logscale=True, label=None,
+                            x0_logscale=True, label=None, hypotenuse_only=False,
                             label_padding=0.1, text_args={}, ax=None,
                             **kwargs):
     """Draw a triangle showing the best-fit power-law on a log-log scale.
@@ -233,24 +233,25 @@ def draw_power_law_triangle(alpha, x0, width, orientation, base=10,
     x1 = x0*base**width
     y1 = y0*(x1/x0)**alpha
     ax.plot([x0, x1], [y0, y1], 'k')
-    if (alpha >= 0 and orientation == 'up') \
-            or (alpha < 0 and orientation == 'down'):
-        ax.plot([x0, x1], [y1, y1], 'k')
-        ax.plot([x0, x0], [y0, y1], 'k')
-        # plt.plot lines have nice rounded caps
-        # plt.hlines(y1, x0, x1, **kwargs)
-        # plt.vlines(x0, y0, y1, **kwargs)
-        corner = [x0, y1]
-    elif (alpha >= 0 and orientation == 'down') \
-            or (alpha < 0 and orientation == 'up'):
-        ax.plot([x0, x1], [y0, y0], 'k')
-        ax.plot([x1, x1], [y0, y1], 'k')
-        # plt.hlines(y0, x0, x1, **kwargs)
-        # plt.vlines(x1, y0, y1, **kwargs)
-        corner = [x1, y0]
-    else:
-        raise ValueError(r"Need $\alpha\in\mathbb{R} and orientation\in{'up', "
-                         r"'down'}")
+    if not hypotenuse_only:
+        if (alpha >= 0 and orientation == 'up') \
+                or (alpha < 0 and orientation == 'down'):
+            ax.plot([x0, x1], [y1, y1], 'k')
+            ax.plot([x0, x0], [y0, y1], 'k')
+            # plt.plot lines have nice rounded caps
+            # plt.hlines(y1, x0, x1, **kwargs)
+            # plt.vlines(x0, y0, y1, **kwargs)
+            corner = [x0, y1]
+        elif (alpha >= 0 and orientation == 'down') \
+                or (alpha < 0 and orientation == 'up'):
+            ax.plot([x0, x1], [y0, y0], 'k')
+            ax.plot([x1, x1], [y0, y1], 'k')
+            # plt.hlines(y0, x0, x1, **kwargs)
+            # plt.vlines(x1, y0, y1, **kwargs)
+            corner = [x1, y0]
+        else:
+            raise ValueError(r"Need $\alpha\in\mathbb{R} and orientation\in{'up', "
+                             r"'down'}")
     if label is not None:
         xlabel = x0*base**(width/2)
         if orientation == 'up':
